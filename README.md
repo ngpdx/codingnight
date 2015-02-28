@@ -1,2 +1,0 @@
-# codingnight
-rules and resources
