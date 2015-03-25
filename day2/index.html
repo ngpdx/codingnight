@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="main">
+    <div class="fix-width">
+        <div id="content" class="static blog">
+            <div class="block-white">
+                <div class="metadata">
+                    <div class="clear"></div>
+                </div>
+                <div class="article-content">
+                    <h1>AngularJS Weather Widget</h1>
+                    <p class="summary">
+                        AngularJS Portland Coding night #2.  I like the layout and format of the example we usedin the last meeting, </br>
+                        and wanted to adopt this format for out future coding night's.  In this example we will be starting off </br>
+                        with a basic weather widget. It will be an angular module that you can add to another application, or web page.</br>
+
+                    </p>
+                    <h3 class="full-width">Prerequisites</h3>
+                    <p>
+                        The only requirement for this tutorial is a basic understanding of front-end languages such as HTML, CSS, and JavaScript.  </br>
+                        We will be using Angular directives, controllers, and services.  If you are unable to attend our coding night you may need to </br>
+                        be familiar with using these concepts to be successful.
+                    </p>
+
+                    <h3 class="full-width">The Demo App</h3>
+                    <a href="http://plnkr.co/edit/1mBr26oZvG6qgdyjU1qP?p=info"><img src="http://i.imgur.com/P6nrcos.png" title="source: imgur.com" /></a>
+                    <!--<a href="http://plnkr.co/edit/vWGRxl0rBwgzZhMKUTtB?p=preview"><img src="http://i.imgur.com/s5Nav85.png" class="full-width"/></a>-->
+
+                    <p>
+                        Let's get started and build out our demo app.  Right-click on the image above and open a new tab to start the example with plunker.  When you are in Plunker click the fork button on the top bar and we can get started.
+                    </p>
+                    <p>
+
+                    </p>
+
+                    <!--
+                      Image of Todo app with link to Plunker
+                    -->
+
+                    <h3 class="full-width">1. Create the demo module</h3>
+                    <p>
+                        The first thing we need to do is initialize our demo app by creating
+                        a module. Don't worry, it's just one line of code in app.js.
+                    </p>
+    <pre class="prettyprint" lang="javascript">
+      angular.module('WidgetTester', []);
+    </pre>
+                    <p>
+                        We need to build a simple demo app that will include our module to display the widget.  this can be part of an application or </br>
+                        displayed in a container in a existing web page that isn't an angular application.
+                    </p>
+
+                    <h3 class="full-width">2. Initialize the View</h3>
+                    <p>
+                        Now that we have a our module declared, we can make our view aware
+                        of our Angular app.
+                    </p>
+<pre class="prettyprint" lang="html">
+&lt;div class="container" ng-app="WidgetTester"&gt;
+</pre>
+                    <p>
+                        Above, we are adding an attribute to our body tag called "ng-app" and
+                        setting its value to the name of our module.   Go to index.html and add <code>ng-app="WidgetTester"</code> to the container div.
+                    </p>
+                    <br/><br/>
+                    <h3 class="full-width">The Weather Widget</h3>
+                    <h3 class="full-width">1. Create our module</h3>
+                    <p>
+                        We can now get started on building our widget.  Like step one of the demo app we need to initialize this module.  Copy the code below into widget.js.
+                    </p>
+<pre class="prettyprint" lang="javascript">
+angular.module('WeatherWidget', []);
+
+</pre>
+                    <h3 class="full-width">2. Copy the html from index to the widget.html template</h3>
+                    <p>
+                        This project started with html for the weather widget in the index.html file, so that you could see what we are building.  You can cut and paste the html code between the tags that say "Widget HTML Start" and "Widget HTML End" into the directive, or save it to the widget.html file that we can reference in the directive.
+                    </p>
+<pre class="prettyprint" lang="html">
+&lt;!-- Widget HTML Start --&gt;
+&lt;div class="panel-heading"&gt;
+    &lt;div class="panel-title header"&gt;
+      &lt;div class="row"&gt;
+        &lt;div class="col-xs-5"&gt;Beaverton, OR Weather&lt;/div&gt;
+        &lt;div class="col-xs-4"&gt;&lt;/div&gt;
+        &lt;div class="col-xs-3"&gt;Mon 3/16&lt;/div&gt;
+        &lt;div class="col-xs-2"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+    &lt;div class="panel-body pull-center body ng-class:weather.getBackground()"&gt;
+  &lt;div class="row"&gt;
+  &lt;div class="col-xs-8"&gt;&lt;span class="align-left" style="font-size:22px"&gt;{{weather.current.location.name}}&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="col-xs-1"&gt&lt;i ng-class="weather.getIcon()" style=""&gt&lt;/i&gt&lt;/div&gt&lt;div class="col-xs-2">&lt;span class="align-left" style="font-size:20px"&gt{{weather.current.temp}}&deg;&lt;/span>&lt;/div&gt
+      &lt;div class="col-xs-"&gt&lt;span style="font-size:20px"&gt;&lt;/span>&lt;/div&gt
+      &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="row"&gt;
+    &lt;div class="col-xs-2"&gt;&lt;span class="align-left" style="font-size:9px"&gt;{{weather.current.high.temp}}&deg;/{{weather.current.low.temp}}&deg;&lt;/span&gt;&lt;/div&gt;
+  &lt;div class="col-xs-2"&gt;&lt;span class="align-left" style="font-size:9px"&gt;precip {{weather.current.high.temp}}%&lt;/span&gt;&lt;/div&gt;
+  &lt;div class="col-xs-2"&gt;&lt;span class="align-left" style="font-size:9px"&gt;humidity {{weather.current.humidity}}%&lt;/span&gt;&lt;/div&gt;
+&lt;div class="col-xs-2"&gt;&lt;span class="align-left" style="font-size:9px"&gt;wind {{weather.current.wind}} mph&lt;/span&gt;&lt;/div&gt;
+   &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Widge HTML End --&gt;
+</pre>
+                    <h3 class="full-width">3. Create our directive</h3>
+                    <p>
+                        Let's create our directive.  Go back to widget.js where you created your WeatherWidget module and add the code shown below.  From an earlier step we copied the html into a file called widget.html.  In our directive we will be referencing that file using the templateUrl parameter.
+                    </p>
+<pre class="prettyprint" lang="javascript">
+angular.module('WeatherWidget', [])
+.directive('weatherWidget', function() {
+  return {
+    templateUrl: 'widget.html'
+  }
+});
+</pre>
+                    <p>Now back in the index.html add the directive tag <code>&lt;weather-widget&gt;&lt;/weather-widget&gt;</code> inside of the container div where you added <code>ng-app="WidgetTester"</code> .  we now have a basic directive that will display the html snippet that we started with.  We will need to the directive tag to our view.  </p>
+<pre class="prettyprint" lang="html">
+&lt;div class="container" ng-app="WidgetTester"&gt;
+  &lt;weather-widget&gt;&lt;/weather-widget&gt;
+&lt;/div&gt;
+</pre>
+                    <p>Now refresh the page, but why do you not see anything?</p>
+                    <p>Your WidgetTester application doesn't know about the WeatherWidget.  </p>
+                    <h3 class="full-width">4. Inject the WeatherWidget Module into our test app</h3>
+                    <p>
+                        In the app.js file add the WeatherWidget module
+                    </p>
+<pre class="prettyprint" lang="javascript">
+  angular.module('WidgetTester', [<span style="background-color: #FFFF00">'WeatherWidget'</span>]);
+</pre>
+                    <h3 class="full-width">5. Create the WeatherWidget controller</h3>
+                    <!--
+                      Explain dependency inject verrrryyy briefly
+                    -->
+                    <p>
+                        Now that we have a basic module with a directive let's build out our controller.  In the widget.js folder where you created your <code>WeatherWidget module</code> you can add the controller example below.  I created an object that we will bind the the view in a later step.
+                    </p>
+<pre class="prettyprint" lang="javascript">
+angular.module('WeatherWidget', [])
+.directive('weatherWidget', function() {
+  return {
+    templateUrl: 'widget.html'
+  }
+})
+.controller('WeatherController', function() {
+  this.title = "Weather";
+
+  this.current = {
+    "datetime": "1426508102",
+    "location": {
+      "lat": 0,
+      "long": 0,
+      "name": "Beaverton, OR"
+    },
+    "temp": 58,
+    "conditions": "windy",
+    "wind": 12,
+    "humidity": 3,
+    "dew point": 25,
+    "visibility": 50,
+    "pressure": 10,
+    "high": {
+      "temp": 58,
+      "time": 1600
+    },
+    "low": {
+      "temp": 44,
+      "time": 0530
+    }
+  }
+});
+</pre>
+                    <h3 class="full-width">6. Tell the view about the controller</h3>
+                    <p>
+                        To get our view to know about the controller we need to use the
+                        "ng-controller" directive in our weather widget template file. In our example we are using the controllerAs syntax available in Angular 1.3.  We define our controller <code>weatherController</code> as <code>weather</code>, which allows us to reference our controller as weather.  We will see how to bind our data to the view in our next step.
+                    </p>
+<pre class="prettyprint" lang="html">
+&lt;div class="panel panel-default" <span style="background-color: #FFFF00">ng-controller="WeatherController as weather"</span>&gt;
+  &lt;div class="panel-heading"&gt;&lt;div class="panel-title header"&gt;{{weather.title}}&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="panel-body pull-center body"&gt;
+</pre>
+                    <h3 class="full-width">7. Bind data to the page</h3>
+                    <p>
+                        Before we go off and add more features we need to see how a simple data binding example works.  For instance to reference the <code>Title</code> variable available in our controller we can use the <code>{{weather.title}}</code>.
+
+                        In our HTML file we can bind data to the page by using
+                        a special syntax with double curly brace on each side as shown above in the example of
+                        <code>{{weather.title}}</code>.
+                    </p>
+<pre class="prettyprint" lang="html">
+&lt;div class="panel panel-default" ng-controller="WeatherController as weather"&gt;
+  &lt;div class="panel-heading"&gt;
+      &lt;div class="row"&gt;
+        &lt;div class="col-xs-5"&gt;Beaverton, OR <span style="background-color: #FFFF00">{{weather.title}}</span>&lt;/div&gt;
+        &lt;div class="col-xs-4"&gt;&lt;/div&gt;
+        &lt;div class="col-xs-3"&gt;Mon 3/16&lt;/div&gt;
+        &lt;div class="col-xs-2"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+    &lt;div class="panel-body pull-center body"&gt;
+
+</pre>
+                    <p>
+                        When we run the page we will now see the Title on the page.
+                    </p>
+<pre class="prettyprint" lang="html">
+
+</pre>
+                    <p>
+
+                    </p>
+                    <h3 class="full-width">8. Bind the other data points</h3>
+
+                    <p>
+                        Now that we can see how the binding works choose the other items you would like to see such as high temperature, low tempurature and humidity.
+                    </p>
+<pre>
+&lt;div class="panel panel-default" ng-controller="WeatherController as weather"&gt;
+  &lt;div class="panel-heading"&gt;
+    &lt;div class="panel-title header"&gt;
+      &lt;div class="row"&gt;
+        &lt;div class="col-xs-5"&gt;{{weather.current.location.name}} {{weather.title}}&lt;/div&gt;
+        &lt;div class="col-xs-4"&gt;&lt;/div&gt;
+        &lt;div class="col-xs-3"&gt;{{weather.current.datetime}}&lt;/div&gt;
+        &lt;div class="col-xs-2"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+    &lt;div class="panel-body pull-center body ng-class:day"&gt;
+  &lt;div class="row"&gt;
+  &lt;div class="col-xs-8"&gt;&lt;span class="align-left" style="font-size:22px"&gt;{{weather.current.location.name}}&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="col-xs-1"&gt&lt;i ng-class="wi wi-day-sunny" style=""&gt&lt;/i&gt&lt;/div&gt&lt;div class="col-xs-2">&lt;span class="align-left" style="font-size:20px"&gt{{weather.current.temp}}&deg;&lt;/span>&lt;/div&gt
+      &lt;div class="col-xs-"&gt&lt;span style="font-size:20px">{{weather.current.datetime}}&lt;/span>&lt;/div&gt
+      &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="row"&gt;
+    &lt;div class="col-xs-2"&gt;&lt;span class="align-left" style="font-size:9px"&gt;{{weather.current.high.temp}}&deg;/{{weather.current.low.temp}}&deg;&lt;/span&gt;&lt;/div&gt;
+  &lt;div class="col-xs-2"&gt;&lt;span class="align-left" style="font-size:9px"&gt;precip {{weather.current.high.temp}}%&lt;/span&gt;&lt;/div&gt;
+  &lt;div class="col-xs-2"&gt;&lt;span class="align-left" style="font-size:9px"&gt;humidity {{weather.current.humidity}}%&lt;/span&gt;&lt;/div&gt;
+&lt;div class="col-xs-2"&gt;&lt;span class="align-left" style="font-size:9px"&gt;wind {{weather.current.wind}} mph&lt;/span&gt;&lt;/div&gt;
+   &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+                    <h3 class="full-width">9. Add a Date Filter</h3>
+                    <p>If you are thinking some things just don't look right, you are right.  Instead of a date in the <code>datetime</code> property doesn't look like a date or time.  What we see is this <code>1426508102</code> which is an epoch (UNIX) date.  In our case we will get assume we are getting at UTC or epoch date from the server and we will be filtering it.  Let's choose a filter that shows us the day of the week and the day and month.</p>
+<pre class="prettyprint" lang="javascript">
+  &lt;div class="panel-heading"&gt;
+    &lt;div class="panel-title header"&gt;
+      &lt;div class="row"&gt;
+        &lt;div class="col-xs-5"&gt;{{weather.current.location.name}} {{weather.title}}&lt;/div&gt;
+        &lt;div class="col-xs-4"&gt;&lt;/div&gt;
+        &lt;div class="col-xs-3"&gt;{{<span style="background-color: #FFFF00">weather.current.datetime | date:'EEE M/d'</span>}}&lt;/div&gt;
+        &lt;div class="col-xs-2"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+</pre>
+                    <h3 class="full-width">10. Create a date conversion function on the controller</h3>
+                    <p>
+                        What we see now is a date, but it is not correct.  It should read Mon 3/16 and we see Sat 1/17.  We need to convert the date.  Our value is not in miliseconds and we can add the epoch time and multiply it by one thousand and use it to instantiate a javascript Date object.  Now go back to the widget.js file where your controller is located.  Copy the code below into your controller.
+                    </p>
+<pre class="prettyprint" lang="html">
+this.convertDate = function() {
+  return new Date(this.current.datetime * 1000);
+}
+</pre>
+                    <p>Now that you have a function available in your controller you can call <code>{{weather.convertDate()}}</code> in your view.  Remeber when I mention view I mean your html.  In this case it is the widget.html template.</p>
+<pre>
+  &lt;div class="panel-heading"&gt;
+    &lt;div class="panel-title header"&gt;
+      &lt;div class="row"&gt;
+      &lt;div class="col-xs-5"&gt;{{weather.current.location.name}} {{weather.title}}&lt;/div&gt;
+      &lt;div class="col-xs-4"&gt;&lt;/div&gt;
+        &lt;div class="col-xs-3"&gt;<span style="background-color: #FFFF00">{{weather.convertDate() | date:'EEE M/d'}} </span>&lt;/div&gt;
+        &lt;div class="col-xs-2"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+</pre>
+                    <h3 class="full-width">11. Add a time filter</h3>
+                    <p>
+                        Now we have a function to convert the date we can now apply a different filter to show the time.
+                    </p>
+<pre>
+  {{weather.convertDate() | date:'shortTime'}}
+</pre>
+                    </br></br>
+                    <h2>Extra Credit</h2>
+                    <p>If you are interested in </p>
+                    <h3 class="full-width">12. Add a function to change the background based on the time.</h3>
+                    <p>
+                        We will need to define what times day and night begin.  This may also change throughout the year and depend on your location.  In our example here I made it simple and defined the sunrise at 6am and sunset at 8pm.
+                    </p>
+<pre>
+this.getBackground = function() {
+  var hr = (new Date()).getHours();
+  return hr >= 6 && hr <= 20 ? "day" : "night";
+}
+</pre>
+                    <p>Let's add the ng-class directive to our widget.html template.</p>
+<pre>
+    &lt;div class="panel-body pull-center body <span style="background-color: #FFFF00">ng-class:weather.getBackground()"</span>&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="col-xs-1">&lt;i ng-class="wi wi-rain" style="">&lt;/i>&lt;/div&gt;
+      &lt;div class="col-xs-3">&lt;span class="align-left" style="font-size:20px">{{weather.current.temp}}&deg;&lt;/span&gt;&lt;/div&gt;
+      &lt;div class="col-xs-3"&gt;&lt;span style="font-size:20px"&gt;{{weather.convertDate() | date:'shortTime'}}&lt;/span>&lt;/div&gt;
+      &lt;div class="col-xs-3">&lt;span style="font-size:20px">{{weather.convertDate() | date:'EEE M/d'}}&lt;/span>&lt;/div&gt;
+    &lt;/div&gt;
+</pre>
+                    <p>Add this function to the widget.js file inside of the controller.  I have defined two styles day or night in the widgetstyle.css file if you would like to change the colors.</p>
+<pre>
+.night {
+  background-color: #000;
+}
+
+.day {
+  background-color:#87CEEB;
+}
+</pre>
+                    <h3 class="full-width">13. Let's create a function to change the icon based on the description</h3>
+                    <p>
+                        We now have a function that changes the background color based on the current time when the widget is loaded.  I created another object that is part of our controller in the widget.js file.  This is the icons object, and I defined properties of day or night.  This is due to the fact that the icons will have a moon or sun.  I have then added keys that relate to the condition and the value of the css property for the icon class.
+                    </p>
+  <pre>
+this.icons = {
+    "day" : {
+      "sunny": "wi-sunny-day",
+      "windy": "wi-day-cloudy-gusts",
+      "rainy": "wi-day-rain",
+      "lightning": "wi-day-lightning",
+      "hailing": "wi-day-sleet",
+      "thunderstorms": "wi-day-thunderstorm",
+      "snowing": "wi-day-snow",
+      "fog": "wi-day-fog",
+      "hot": "wi-hot"
+    },
+    "night": {
+      "clear": "wi-night-clear",
+      "windy": "wi-cloudy-gusts",
+      "rainy": "wi-night-alt-rain",
+      "lightning": "wi-night-alt-lightning",
+      "hailing": "wi-night-hail",
+      "thunderstorms": "wi-night-thunderstorm",
+      "snowing": "wi-night-alt-snow",
+      "showers": "wi-night-alt-showers",
+      "fog": "wi-night-fog"
+    }
+  }
+  </pre>
+                    <p>
+                        We now have a small set of icons for the conditions we could see.  Let's put that to use by creating a function that can return the icon string value based on the condition.  We are still in the widget.js and will add the <code>getIcon()</code> function below to our controller.
+                    </p>
+                    <p>
+                        I am using lodash to simplify the function, but it may not make sense if you haven't been exposed to lodash.  I am mapping the condition string from the current object found in our controller to the key in the icons object.  The value returned is an array, and I get the result based on the key of "day" or "night".  You should now see your icon.
+                    </p>
+  <pre>
+  this.getIcon = function() {
+    var condition = _.mapValues(this.icons, this.current.condition);
+    return "wi " +  _.result(condition, this.getBackground());
+  }
+  </pre>
+                    <p>
+                        Now we add it to our view in the widget.html template.
+                    </p>
+  <pre>
+  &lt;div class="panel-body pull-center body ng-class:weather.getBackground()"&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="col-xs-1">&lt;i <span style="background-color: #FFFF00">ng-class="getIcon()"</span>  style="">&lt;/i>&lt;/div&gt;
+      &lt;div class="col-xs-3">&lt;span class="align-left" style="font-size:20px">{{weather.current.temp}}&deg;&lt;/span&gt;&lt;/div&gt;
+      &lt;div class="col-xs-3"&gt;&lt;span style="font-size:20px"&gt;{{weather.convertDate() | date:'shortTime'}}&lt;/span>&lt;/div&gt;
+      &lt;div class="col-xs-3">&lt;span style="font-size:20px">{{weather.convertDate() | date:'EEE M/d'}}&lt;/span>&lt;/div&gt;
+    &lt;/div&gt;
+  </pre>
+                    <h3 class="full-width">Summary</h3>
+                    <p>
+                        You are now done with part 1 of our series and we have accomplished a lot of things in a short amount of time.  You have created your own weather directive that you can reuse in a web page or an application.  We also got to use ng-class, filters, controllers and directives.  We are ready now to add a location service, data services, and some new visual features in part 2.
+                    </p>
+                </div>
+            </div>
+</body>
+</html>
