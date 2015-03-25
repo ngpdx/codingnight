@@ -83,31 +83,34 @@ angular.module('WeatherWidget', []);
                     </p>
 <pre class="prettyprint" lang="html">
 &lt;!-- Widget HTML Start --&gt;
-&lt;div class="panel-heading"&gt;
-    &lt;div class="panel-title header"&gt;
-      &lt;div class="row"&gt;
-        &lt;div class="col-xs-5"&gt;Beaverton, OR Weather&lt;/div&gt;
-        &lt;div class="col-xs-4"&gt;&lt;/div&gt;
-        &lt;div class="col-xs-3"&gt;Mon 3/16&lt;/div&gt;
-        &lt;div class="col-xs-2"&gt;&lt;/div&gt;
+&lt;div class=&quot;container&quot;&gt;
+  &lt;div class=&quot;panel panel-default&quot;&gt;
+    &lt;div class=&quot;panel-heading&quot;&gt;
+      &lt;div class=&quot;panel-title header&quot;&gt;
+        &lt;div class=&quot;row&quot;&gt;
+          &lt;div class=&quot;col-xs-6&quot;&gt;Beaverton, OR Weather&lt;/div&gt;
+          &lt;div class=&quot;col-xs-2&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;col-xs-3&quot;&gt;&lt;span&gt;Mon 3/17&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;col-xs-1 btn-group&quot;&gt;&lt;button class=&quot;btn btn-xs btn-default&quot;&gt;&lt;i class=&quot;icon-info-sign&quot;&gt;&lt;/i&gt;_&lt;/button&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;panel-body pull-center body day&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-xs-2&quot;&gt;&lt;i class=&quot;wi wi-rain&quot;&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;div class=&quot;col-xs-3&quot;&gt;&lt;span class=&quot;align-left&quot; style=&quot;font-size:20px&quot;&gt;53&deg;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;col-xs-3&quot;&gt;&lt;span style=&quot;font-size:20px&quot;&gt;8:30AM&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-xs-2&quot;&gt;&lt;span class=&quot;align-left&quot; style=&quot;font-size:9px&quot;&gt;53&deg;/41&deg;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;col-xs-3&quot;&gt;&lt;span class=&quot;align-left&quot; style=&quot;font-size:9px&quot;&gt;precip 100%&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;col-xs-3&quot;&gt;&lt;span class=&quot;align-left&quot; style=&quot;font-size:9px&quot;&gt;humidity 99%&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;col-xs-3&quot;&gt;&lt;span class=&quot;align-left&quot; style=&quot;font-size:9px&quot;&gt;wind 2 mph&lt;/span&gt;&lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
-    &lt;div class="panel-body pull-center body ng-class:weather.getBackground()"&gt;
-  &lt;div class="row"&gt;
-  &lt;div class="col-xs-8"&gt;&lt;span class="align-left" style="font-size:22px"&gt;{{weather.current.location.name}}&lt;/span&gt;&lt;/div&gt;
-        &lt;div class="col-xs-1"&gt&lt;i ng-class="weather.getIcon()" style=""&gt&lt;/i&gt&lt;/div&gt&lt;div class="col-xs-2">&lt;span class="align-left" style="font-size:20px"&gt{{weather.current.temp}}&deg;&lt;/span>&lt;/div&gt
-      &lt;div class="col-xs-"&gt&lt;span style="font-size:20px"&gt;&lt;/span>&lt;/div&gt
-      &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="row"&gt;
-    &lt;div class="col-xs-2"&gt;&lt;span class="align-left" style="font-size:9px"&gt;{{weather.current.high.temp}}&deg;/{{weather.current.low.temp}}&deg;&lt;/span&gt;&lt;/div&gt;
-  &lt;div class="col-xs-2"&gt;&lt;span class="align-left" style="font-size:9px"&gt;precip {{weather.current.high.temp}}%&lt;/span&gt;&lt;/div&gt;
-  &lt;div class="col-xs-2"&gt;&lt;span class="align-left" style="font-size:9px"&gt;humidity {{weather.current.humidity}}%&lt;/span&gt;&lt;/div&gt;
-&lt;div class="col-xs-2"&gt;&lt;span class="align-left" style="font-size:9px"&gt;wind {{weather.current.wind}} mph&lt;/span&gt;&lt;/div&gt;
-   &lt;/div&gt;
-&lt;/div&gt;
-&lt;!-- Widge HTML End --&gt;
+&lt;!-- Widget HTML End --&gt;
 </pre>
                     <h3 class="full-width">3. Create our directive</h3>
                     <p>
