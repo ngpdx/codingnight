@@ -5,6 +5,175 @@
     <title></title>
 </head>
 <body>
+<div id="main">
+    <div class="fix-width">
+        <div id="content" class="static blog">
+            <div class="block-white">
+                <div class="metadata">
+                    <div class="clear"></div>
+                </div>
+                <div class="article-content">
+                    <h1>AngularJS Weather Widget</h1>
+                    <p class="summary">
+                        AngularJS Portland Coding night #2.  I like the layout and format of the example we usedin the last meeting, </br>
+                        and wanted to adopt this format for out future coding night's.  In this example we will be starting off </br>
+                        with a basic weather widget. It will be an angular module that you can add to another application, or web page.</br>
 
+                    </p>
+                    <h3 class="full-width">Prerequisites</h3>
+                    <p>
+                        This is the second part in a series and it will help to have finished the part 1 example.  You should be familiar with services, controllers and directives.
+                    </p>
+                    <h3 class="full-width">The Weather Widget</h3>
+                    <a href="http://plnkr.co/edit/2YepQZbGnkvNKLyhhbpj?p=preview"><img src="http://i.imgur.com/6qPMn52.png" title="source: imgur.com" /></a>
+
+                    <h3 class="full-width">1. Lets start by adding the html view for a five day forecast. </h3>
+                    <p>
+                        We will go into our widget.html template and copy the script below to see the layout of a five day forecast including the current day.
+                    </p>
+<pre class="prettyprint" lang="javascript">
+  &lt;div class=&quot;panel-body pull-center body ng-class:weather.getBackground()&quot; &gt;
+   &lt;div class=&quot;content&quot; ng-switch on=&quot;1&quot; ng-hide=&quot;weather.isBodyHidden&quot;&gt;
+    &lt;div ng-switch-when=&quot;1&quot; &gt;
+        &lt;ng-include src=&quot;'weather.html'&quot;&gt;&lt;/ng-include&gt;
+    &lt;/div&gt;
+    &lt;div ng-switch-when=&quot;2&quot;&gt;
+        &lt;ng-include src=&quot;'settings.html'&quot;&gt;&lt;/ng-include&gt;
+    &lt;/div&gt;
+   &lt;/div&gt;
+    &lt;div class=&quot;row forecast&quot;&gt;
+      &lt;div class=&quot;col-xs-2&quot;&gt;&lt;span class=&quot;align-left&quot; style=&quot;font-size:9px&quot;&gt;&lt;i style=&quot;font-size:22px&quot; class=&quot;wi wi-day-sunny&quot;&gt;&lt;/i&gt;65&deg;/44&deg; Fri&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-xs-2&quot;&gt;&lt;span class=&quot;align-left&quot; style=&quot;font-size:9px&quot;&gt;&lt;i style=&quot;font-size:22px&quot; class=&quot;wi wi-rain&quot;&gt;&lt;/i&gt; 62&deg;/44&deg; Sat&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-xs-2&quot;&gt;&lt;span class=&quot;align-left&quot; style=&quot;font-size:9px&quot;&gt;&lt;i style=&quot;font-size:22px&quot; class=&quot;wi wi-day-sunny&quot;&gt;&lt;/i&gt;57&deg;/44&deg; Sun&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-xs-2&quot;&gt;&lt;span class=&quot;align-left&quot; style=&quot;font-size:9px&quot;&gt;&lt;i style=&quot;font-size:22px&quot; class=&quot;wi wi-showers&quot;&gt;&lt;/i&gt;64&deg;/44&deg; Mon&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-xs-2&quot;&gt;&lt;span class=&quot;align-left&quot; style=&quot;font-size:9px&quot;&gt;&lt;i style=&quot;font-size:22px&quot; class=&quot;wi wi-day-sunny&quot;&gt;&lt;/i&gt;69&deg;/44&deg; Tue&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-xs-2&quot;&gt;&lt;span class=&quot;align-left&quot; style=&quot;font-size:9px&quot;&gt;&lt;i style=&quot;font-size:22px&quot; class=&quot;wi wi-cloudy&quot;&gt;&lt;/i&gt;65&deg;/44&deg; Wed&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+</pre>
+                    <h3 class="full-width">2. Next let's  add a button to minimize the view of the widget body.</h3>
+                    <p>
+                        In this example we will add to buttons to the widget to allow the user to minimize the body to hide the current forecast details, and show the
+                        user settings.  In this step we will start with the minimize button.  This will allow us to only show the five day forecast with the icon for the
+                        current day and the high low temperatures.
+                    </p>
+                    <p>Before we add our view we will create a new function in our WeatherController controller in the widget.js file.  We need to add the this.isBodyHidden and set
+                        the variable to false.</p>
+<pre class="prettyprint" lang="html">
+    this.isBodyHidden = false;
+
+  var windowControl = function() {
+    if(this.isBodyHidden) {
+      return "fa fa-caret-up";
+    }
+    return "fa fa-caret-down"
+  }
+</pre>
+                    <p>Now that we have the function in our WeatherController we can add it to our view which is included in the code below.  We start </p>
+<pre>
+&lt;div class=&quot;panel-title header&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;col-xs-5&quot;&gt;{{weather.current.location.name}}&lt;/div&gt;
+    &lt;div class=&quot;col-xs-5&quot;&gt;&lt;span&gt;{{weather.convertDate() | date:'EEE M/d'}}&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;col-xs-1&quot;&gt;
+    &lt;i ng-class=&quot;weather.windowControl()&quot; ng-click=&quot;weather.isBodyHidden = !weather.isBodyHidden&quot;&gt;&lt;/i&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;col-xs-1&quot;&gt;
+    &lt;i class=&quot;fa fa-gear dropdown-toggle pull-right&quot; dropdown-toggle ng-disabled=&quot;disabled&quot;&gt;&lt;/i&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+                    <h3 class="full-width">3. Moving icons out of the controller and into a constant.</h3>
+                    <p>
+                        Let's do a little refactoring and move our icon object into a constant and inject it into the controller.  This will also allow us later to inject this constant
+                        into a service.  We will add the constant to our WeatherWidget module which is in the widjet.js file.
+                    </p>
+<pre class="prettyprint" lang="javascript">
+.constant('WeatherIcons',
+  {
+    "day" : {
+      "sunny": "wi-sunny-day",
+      "windy": "wi-day-cloudy-gusts",
+      "rainy": "wi-day-rain",
+      "lightning": "wi-day-lightning",
+      "hailing": "wi-day-sleet",
+      "thunderstorms": "wi-day-thunderstorm",
+      "snowing": "wi-day-snow",
+      "fog": "wi-day-fog",
+      "hot": "wi-hot"
+    },
+    "night": {
+      "clear": "wi-night-clear",
+      "windy": "wi-cloudy-gusts",
+      "rainy": "wi-night-alt-rain",
+      "lightning": "wi-night-alt-lightning",
+      "hailing": "wi-night-hail",
+      "thunderstorms": "wi-night-thunderstorm",
+      "snowing": "wi-night-alt-snow",
+      "showers": "wi-night-alt-showers",
+      "fog": "wi-night-fog"
+    }
+  }
+)
+</pre>
+                    <p>Now we can remove the object from our controller and inject the constant</p>
+                    <pre></pre>
+                    <h3 class="full-width">4. Moving the data object into a service</h3>
+                    <p>
+                    </p>
+<pre class="prettyprint" lang="javascript">
+</pre>
+                    <h3 class="full-width">5. Using $http to get our data</h3>
+                    <!--
+                      Explain dependency inject verrrryyy briefly
+                    -->
+                    <p>
+                    </p>
+<pre class="prettyprint" lang="javascript">
+
+</pre>
+                    <h3 class="full-width">6. Create a forecast card directive</h3>
+                    <p>
+                    </p>
+<pre class="prettyprint" lang="html">
+
+</pre>
+                    <h3 class="full-width">7. Forecast Data</h3>
+                    <p>
+
+                    </p>
+<pre class="prettyprint" lang="html">
+
+</pre>
+
+                    <h3 class="full-width">8. Repeat over the forecast data to show the 5 day forecast</h3>
+
+                    <p>
+                    </p>
+<pre>
+
+</pre>
+                    <h3 class="full-width">9. Create settings page</h3>
+                    <p>
+                    </p>
+<pre class="prettyprint" lang="javascript">
+
+</pre>
+                    <h3 class="full-width">10. Add click event to the gear icon to show the settings page</h3>
+                    <p>
+                    </p>
+<pre class="prettyprint" lang="html">
+
+</pre>
+                    <h3 class="full-width">11. Create a setting to show or hide the current conditions details</h3>
+                    <p></p>
+                    <pre></pre>
+
+                    <h3 class="full-width">Summary</h3>
+                    <p>
+                        You are now done with part 1 of our series and we have accomplished a lot of things in a short amount of time.  You have created your own weather directive that you can reuse in a web page or an application.  We also got to use ng-class, filters, controllers and directives.  We are ready now to add a location service, data services, and some new visual features in part 2.
+                    </p>
+                </div>
+            </div>
 </body>
 </html>
