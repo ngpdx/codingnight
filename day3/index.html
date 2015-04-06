@@ -15,9 +15,8 @@
                 <div class="article-content">
                     <h1>AngularJS Weather Widget</h1>
                     <p class="summary">
-                        AngularJS Portland Coding night #2.  I like the layout and format of the example we usedin the last meeting, </br>
-                        and wanted to adopt this format for out future coding night's.  In this example we will be starting off </br>
-                        with a basic weather widget. It will be an angular module that you can add to another application, or web page.</br>
+                        Angular Portland Coding night #3.  We will continue with working on the weather widget we started in coding night #2. </br>
+                        We will be adding some visual , and working with some new Angular features.   </br>
 
                     </p>
                     <h3 class="full-width">Prerequisites</h3>
@@ -116,8 +115,15 @@
   }
 )
 </pre>
-                    <p>Now we can remove the object from our controller and inject the constant</p>
-                    <pre></pre>
+                    <p>Now we can remove the object from our controller and inject the constant into our controller.  For now we can leave the variable this.icons and replace the object with the reference
+                    WeatherIcons, which is our constant.</p>
+                    <pre>
+                        }])
+.controller('WeatherController', ['WeatherIcons', 'WeatherService', function(WeatherIcons, WeatherService) {
+  this.isBodyHidden = false;
+
+  this.icons = WeatherIcons;
+                    </pre>
                     <h3 class="full-width">4. Moving the data object into a service</h3>
                     <p>
                     </p>
