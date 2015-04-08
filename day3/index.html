@@ -126,25 +126,57 @@
                     </pre>
                     <h3 class="full-width">4. Moving the data object into a service</h3>
                     <p>
+                        Doing a bit more cleanup let's move the conditions data out of the controller into a service.  This will get us ready to make a call out to a file or web service.  In the widget.js file
+                        copy the code below like you did with the icons constant.
                     </p>
 <pre class="prettyprint" lang="javascript">
+.service('WeatherService', [function() {
+  return {
+        getConditionsByLocation: function() {
+          var current = {
+          "datetime": "1427508102",
+          "location": {
+            "lat": 0,
+            "long": 0,
+            "name": "Beaverton, OR"
+          },
+          "temp": 58,
+          "condition": "windy",
+          "wind": 12,
+          "humidity": 3,
+          "dew point": 25,
+          "visibility": 50,
+          "pressure": 10,
+          "high":{
+            "temp": 58,
+          },
+          "low": {
+            "temp": 44,
+          }
+        }
+          return current;
+        }
+    }
+  }])
 </pre>
-                    <h3 class="full-width">5. Using $http to get our data</h3>
-                    <!--
-                      Explain dependency inject verrrryyy briefly
-                    -->
-                    <p>
-                    </p>
-<pre class="prettyprint" lang="javascript">
+                    <p>We first need to inject the new <code>WeatherService</code> into the WeatherController.  Now that the WeatherService is available we need to change the <code>current</code> variable <code>this.current</code> in the Weather Controller controller to call the WeatherService function <code>getConditionsByLocation()</code></p>
+                    <pre>
+}])
+.controller('WeatherController', ['WeatherIcons', 'WeatherService', function(WeatherIcons, WeatherService) {
+  this.isBodyHidden = false;
 
-</pre>
-                    <h3 class="full-width">6. Create a forecast card directive</h3>
+  this.icons = WeatherIcons;
+
+  this.current = WeatherService.getConditionsByLocation();
+                    </pre>
+                    <h3 class="full-width">5. Create a forecast card directive</h3>
                     <p>
+                        In this step we will take the html snippet that represents the forecast for each day and create another directive.
                     </p>
 <pre class="prettyprint" lang="html">
 
 </pre>
-                    <h3 class="full-width">7. Forecast Data</h3>
+                    <h3 class="full-width">6. Add the Forecast Data</h3>
                     <p>
 
                     </p>
@@ -152,26 +184,26 @@
 
 </pre>
 
-                    <h3 class="full-width">8. Repeat over the forecast data to show the 5 day forecast</h3>
+                    <h3 class="full-width">7. Repeat over the forecast data to show the 5 day forecast</h3>
 
                     <p>
                     </p>
 <pre>
 
 </pre>
-                    <h3 class="full-width">9. Create settings page</h3>
+                    <h3 class="full-width">8. Create settings page</h3>
                     <p>
                     </p>
 <pre class="prettyprint" lang="javascript">
 
 </pre>
-                    <h3 class="full-width">10. Add click event to the gear icon to show the settings page</h3>
+                    <h3 class="full-width">9. Add click event to the gear icon to show the settings page</h3>
                     <p>
                     </p>
 <pre class="prettyprint" lang="html">
 
 </pre>
-                    <h3 class="full-width">11. Create a setting to show or hide the current conditions details</h3>
+                    <h3 class="full-width">10. Create a setting to show or hide the current conditions details</h3>
                     <p></p>
                     <pre></pre>
 
@@ -181,5 +213,6 @@
                     </p>
                 </div>
             </div>
+        </div>
 </body>
 </html>
